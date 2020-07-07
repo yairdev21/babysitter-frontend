@@ -1,0 +1,32 @@
+mat-dialog-content {
+    direction: rtl;
+    h1 {
+        font-size: 40px;
+    }
+}
+
+mat-dialog-actions {
+    flex-direction: column;
+   
+    .a-btn-container {
+        display: flex;
+        a {
+            height: 50px;
+            img {
+                height: 45px;
+                position: relative;
+                top: 3px;
+            }
+        }
+    }
+    .mat-icon {
+        position: relative;
+        right: 8px;
+        bottom: 2px;
+        font-size: 40px;
+      }
+    button {
+        margin-left: 0 !important;
+        margin: 26px 0 14px 0;
+    }
+}

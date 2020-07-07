@@ -1,0 +1,17 @@
+<mat-dialog-content>
+	<img [src]="info.avatarUrl || '../../assets/img/woman-avatar.jpg'" alt="avatar">
+	<h1>{{info.name}}</h1>
+	<h2>תעריף לשעה: {{info.ratePerHour}} ש"ח</h2>
+	<p>נוצר ב: {{info.created | date: 'dd/MM/yyyy'}}</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<div class="a-btn-container">
+		<a mat-raised-button color="primary" (click)="onConfirmClick()" tabindex="1" [href]="tel">
+			<mat-icon>phone</mat-icon>
+		</a>
+		<a mat-raised-button color="primary" (click)="onConfirmClick()" tabindex="2" [href]="sendWhatsapp" target="_blank">
+			<img src="../../assets/img/whatsapp-icon.png" alt="whatsapp">
+		</a>
+	</div>
+	<button mat-raised-button mat-dialog-close tabindex="-1">לא כרגע</button>
+</mat-dialog-actions>
