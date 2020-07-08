@@ -1,15 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MapComponent } from './map/map.component';
 import { GoogleMapsModule } from '@angular/google-maps';
-import { InfoDialogComponent } from './info-dialog/info-dialog.component'
+import { ReactiveFormsModule } from '@angular/forms';
+
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+
+
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { MapComponent } from './map/map.component';
+import { PostJobComponent } from './post-job/post-job.component';
+import { InfoDialogComponent } from './map/info-dialog/info-dialog.component'
 
 
 
@@ -17,16 +23,20 @@ import { MatButtonModule } from '@angular/material/button';
   declarations: [
     AppComponent,
     MapComponent,
-    InfoDialogComponent
+    InfoDialogComponent,
+    PostJobComponent
   ],
   imports: [
-    MatDialogModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     GoogleMapsModule,
+    MatDialogModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

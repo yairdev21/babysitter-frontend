@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Info } from '../map/interfaces/marker.interface';
+import { Info } from './info.interface';
 
 @Component({
   selector: 'bs-info-dialog',
@@ -11,12 +11,14 @@ export class InfoDialogComponent {
 
 
 public get tel() : string {
-  return 'tel:+972' + this.info.phone;
+  //const ilPhonePrefix: string =  '+972'
+  return `tel:0${this.info.phone}`
 }
 
 
 public get sendWhatsapp() : string {
-  return `https://wa.me/${this.info.phone}/?text=שלום, את פנויה הערב לבייביסיטר?`
+  const defaultMessage: string =  'שלום, הגעתי אלייך דרך אפליקציית בייביסטר. פנויה הערב?'
+  return `https://wa.me/0${this.info.phone}/?text=${defaultMessage}`
 }
 
 

@@ -1,12 +1,4 @@
-
-export interface Info {
-    id: number;
-    name: string;
-    avatarUrl?: string;
-    phone: number;
-    created: Date | number | string;
-    ratePerHour: number;
-}
+import { Info } from "./info-dialog/info.interface";
 
 export interface MarkerWithInfo {
     position: google.maps.LatLngLiteral;

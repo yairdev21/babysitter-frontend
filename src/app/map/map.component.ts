@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { GoogleMap, MapInfoWindow } from '@angular/google-maps';
 import { MatDialog } from '@angular/material/dialog';
-import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
-
-import { MarkerWithInfo, Info } from './interfaces/marker.interface';
+import { InfoDialogComponent } from './info-dialog/info-dialog.component';
+import { Info } from './info-dialog/info.interface';
+import { MarkerWithInfo } from './marker.interface';
 
 @Component({
   selector: 'bs-map',
@@ -17,10 +17,8 @@ export class MapComponent implements OnInit {
   zoom = 15;
   center: google.maps.LatLngLiteral;
   options: google.maps.MapOptions = {
-    zoomControl: true,
-    scrollwheel: false,
-    disableDoubleClickZoom: true,
-    mapTypeId: 'hybrid'
+    //zoomControl: true,
+    clickableIcons: false
   };
   markers:MarkerWithInfo[] = [];
   mockMarkers: MarkerWithInfo[];
