@@ -1,5 +1,13 @@
-h1 {
-    margin-right: 5px;
+header {
+    height: 40px;
+    .back-icon {
+        position: relative;
+        bottom: 45px;
+    }    
+    h1 {
+        text-align: center;
+        margin-right: 5px;
+    }
 }
 
 .avatar-container{

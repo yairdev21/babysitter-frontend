@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MapComponent } from './map/map.component';
-import { PostJobComponent } from './post-job/post-job.component';
+import { MapComponent } from './components/map/map.component';
+import { PostJobComponent } from './components/post-job/post-job.component';
 
 
 const routes: Routes = [

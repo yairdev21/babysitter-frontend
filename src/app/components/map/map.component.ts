@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { GoogleMap, MapInfoWindow } from '@angular/google-maps';
 import { MatDialog } from '@angular/material/dialog';
 import { InfoDialogComponent } from './info-dialog/info-dialog.component';
-import { Info } from './info-dialog/info.interface';
-import { MarkerWithInfo } from './marker.interface';
+import { workerInfo } from '../../models/worker-info.interface';
+import { MarkerWithInfo } from '../../models/marker.interface';
+import { Workers } from 'src/app/services/workers.service';
 
 @Component({
   selector: 'bs-map',
@@ -14,28 +15,36 @@ export class MapComponent implements OnInit {
   @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
   @ViewChild(MapInfoWindow, { static: false }) info: MapInfoWindow;
 
-  zoom = 15;
   center: google.maps.LatLngLiteral;
   options: google.maps.MapOptions = {
-    //zoomControl: true,
-    clickableIcons: false
+    // TODO: do I need it?
+    zoomControl: false,
+    clickableIcons: false,
+    gestureHandling: 'greedy'
   };
   markers:MarkerWithInfo[] = [];
   mockMarkers: MarkerWithInfo[];
 
-  constructor(private dialog: MatDialog) { }
+  constructor(
+    private dialog: MatDialog,
+    private serviceProviders: Workers
+    ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     navigator.geolocation.getCurrentPosition(x => {
       this.center = {
         lat: x.coords.latitude,
         lng: x.coords.longitude
       };
     });
-    this.markers.push(this.addMockMarker());
+    this.serviceProviders.getWorkers().subscribe(data => {
+      this.mockMarkers = data
+    });
+    this.markers = this.mockMarkers;
   }
   
-  openInfo(marker: MarkerWithInfo, info: Info) {
+  openInfo(marker: MarkerWithInfo, info: workerInfo): void {
+    // TODO: do I need it?
     //this.infoContent = info;
     //this.info.open(marker);
     const dialogRef = this.dialog.open(InfoDialogComponent, {
@@ -43,36 +52,9 @@ export class MapComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        const a = document.createElement('a');
-        a.click();
-        a.remove();
+       // TODO: handle confirm (call or whatsapp pressed)
       }
     });
-  }
-
-  
-  addMockMarker(): MarkerWithInfo {
-    return { 
-      position: {
-        lat: 31.949350099999996,
-        lng: 34.8875337
-      },
-      label: {
-        color: 'blue',
-        text: 'שרה איבגי'
-      },
-      title: 'פנויה הערב',
-      info: {
-        id: 1,
-        name: 'שרה איבגי',
-        created: Date.now(),
-        phone: 525415858,
-        ratePerHour: 20
-      },
-      options: {
-        animation: google.maps.Animation.BOUNCE
-      }
-    }
   }
 
 }
