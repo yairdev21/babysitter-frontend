@@ -1,4 +1,4 @@
-export interface workerForm {
+export interface WorkerForm {
     firstName: string;
     lastName: string;
     address: string;
@@ -8,8 +8,8 @@ export interface workerForm {
     phone: number;
 }
 
-export interface workerInfo extends workerForm{
-    id?: number;
+export interface WorkerInfo extends WorkerForm {
+    _id?: number;
     avatarUrl?: string;
     created: Date | number | string;
 }

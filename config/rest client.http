@@ -1,0 +1,17 @@
+# POST http://localhost:3000/api/worker HTTP/1.1
+# content-type: application/json
+
+# {
+# "firstName":"יאיר",
+# "lastName":"וייס",
+# "place":"כרמל 6 לוד",
+# "position":{"lat":31.9441473,"lng":34.8873454},
+# "dateOfBirth":"1986-12-04",
+# "ratePerHour":"20",
+# "phone":"0542258958"
+# }
+
+POST http://localhost:3000/api/worker HTTP/1.1
+content-type: application/json
+
+{"info":{"firstName":"יאיר","lastName":"וייס","place":"כרמל 6 לוד","position":{"lat":31.9442473,"lng":34.8873454},"dateOfBirth":"1986-12-03T22:00:00.000Z","ratePerHour":"20","phone":"0526880332","created":1594800011170},"label":{"color":"blue","text":"יאיר וייס"},"title":"פנויה הערב","options":{"animation":1}}

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { GoogleMap, MapInfoWindow } from '@angular/google-maps';
 import { MatDialog } from '@angular/material/dialog';
 import { InfoDialogComponent } from './info-dialog/info-dialog.component';
-import { workerInfo } from '../../models/worker-info.interface';
+import { WorkerInfo } from '../../models/worker-info.interface';
 import { MarkerWithInfo } from '../../models/marker.interface';
 import { Workers } from 'src/app/services/workers.service';
 
@@ -17,17 +17,15 @@ export class MapComponent implements OnInit {
 
   center: google.maps.LatLngLiteral;
   options: google.maps.MapOptions = {
-    // TODO: do I need it?
-    zoomControl: false,
-    clickableIcons: false,
-    gestureHandling: 'greedy'
+    // gestureHandling: 'greedy',
+    disableDefaultUI: true, // a way to quickly hide all controls
   };
-  markers:MarkerWithInfo[] = [];
+  markers: MarkerWithInfo[] = [];
   mockMarkers: MarkerWithInfo[];
 
   constructor(
     private dialog: MatDialog,
-    private serviceProviders: Workers
+    private workers: Workers
     ) { }
 
   ngOnInit(): void {
@@ -37,19 +35,22 @@ export class MapComponent implements OnInit {
         lng: x.coords.longitude
       };
     });
-    this.serviceProviders.getWorkers().subscribe(data => {
-      this.mockMarkers = data
+    this.workers.getWorkers().subscribe(data => {
+      this.markers.push(...data);
     });
-    this.markers = this.mockMarkers;
   }
-  
-  openInfo(marker: MarkerWithInfo, info: workerInfo): void {
+
+  panToCenter(): void {
+    this.map.panTo(this.center);
+  }
+
+  openInfo(marker: MarkerWithInfo, info: WorkerInfo): void {
     // TODO: do I need it?
-    //this.infoContent = info;
-    //this.info.open(marker);
+    // this.infoContent = info;
+    // this.info.open(marker);
     const dialogRef = this.dialog.open(InfoDialogComponent, {
       data: info
-    })
+    });
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
        // TODO: handle confirm (call or whatsapp pressed)

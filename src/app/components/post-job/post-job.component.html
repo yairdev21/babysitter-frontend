@@ -41,7 +41,7 @@
 
     <mat-form-field appearance="outline" class="text-align-end rtl">
         <mat-label>תעריף לשעה</mat-label>
-        <input type="tel" matInput formControlName="ratePerHour">
+        <input type="number" matInput formControlName="ratePerHour" min="10" max="50">
         <!-- TODO: do I need the icon and the hint? -->
         <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
         <!-- <mat-hint>מידע נוסף</mat-hint> -->

@@ -1,6 +1,6 @@
 import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { workerInfo } from '../../../models/worker-info.interface';
+import { WorkerInfo } from '../../../models/worker-info.interface';
 
 @Component({
   selector: 'bs-info-dialog',
@@ -10,29 +10,30 @@ import { workerInfo } from '../../../models/worker-info.interface';
 })
 export class InfoDialogComponent {
 
-  get tel() : string {
+  get tel(): string {
     // TODO: do I need it? //const ilPhonePrefix: string =  '+972'
-    return `tel:0${this.info.phone}`
+    return `tel:${this.info.phone}`;
   }
 
-  get age() : number {
-    const birthYear = this.info.dateOfBirth.getFullYear();
-    const presentYear = new Date().getFullYear();
+  get age(): number {
+    // TODO: if I use angular material date picker I dont need to parse the date
+    const dateOfBirth =  this.parseDate(this.info.dateOfBirth);
+    const birthYear = dateOfBirth.getFullYear();
+    const birthMonth = dateOfBirth.getMonth() === 0 ? 12 : dateOfBirth.getMonth();
 
-    const birthMonth = this.info.dateOfBirth.getMonth() === 0 ? 12 : this.info.dateOfBirth.getMonth();
+    const presentYear = new Date().getFullYear();
     const presentMonth = new Date().getMonth() === 0 ? 12 : new Date().getMonth();
     const monthDifference = presentMonth - birthMonth;
-    const halfYearDifference  = monthDifference >= 6 ? .5: monthDifference <= -6 ? -.5 : 0;
+    const halfYearDifference = monthDifference >= 6 ? .5 : monthDifference <= -6 ? -.5 : 0;
 
     return presentYear - birthYear + halfYearDifference;
   }
 
-  get sendWhatsapp() : string {
-    const defaultMessage: string =  'שלום, הגעתי אלייך דרך אפליקציית בייביסטר. פנויה הערב?'
-    return `https://wa.me/0${this.info.phone}/?text=${defaultMessage}`
+  get sendWhatsapp(): string {
+    const defaultMessage =  'שלום, הגעתי אלייך דרך אפליקציית בייביסטר. פנויה הערב?';
+    return `https://wa.me/${this.info.phone}/?text=${defaultMessage}`;
   }
-  
-  info: workerInfo;
+
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -44,8 +45,16 @@ export class InfoDialogComponent {
       }
   }
 
+  info: WorkerInfo;
+
   onConfirmClick(): void {
     this.dialogRef.close(true);
+  }
+
+  private parseDate(s): Date {
+    const b = s.split(/\D/);
+  // TODO: check if need to minus one the month or no
+    return new Date(b[0], --b[1], b[2]);
   }
 
 }

@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 
-import { Workers } from "../../services/workers.service";
+import { Workers } from '../../services/workers.service';
 
 @Component({
   selector: 'bs-post-job',
@@ -24,13 +24,13 @@ export class PostJobComponent implements AfterViewInit {
     phone: [null, Validators.required]
   });
 
-  avatarUrl = '../../assets/img/woman-avatar.jpg'
+  avatarUrl = '../../assets/img/woman-avatar.jpg';
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private location: Location,
-    private serviceProviders: Workers
+    private workers: Workers
     ) { }
 
   ngAfterViewInit(): void {
@@ -44,7 +44,7 @@ private getPlaceAutocomplete(): void {
       const position: google.maps.LatLngLiteral = {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng()
-      }
+      };
       this.profileForm.patchValue(place);
       this.profileForm.patchValue({position});
     });
@@ -60,7 +60,7 @@ private getPlaceAutocomplete(): void {
     // 2.then navigate to the map and center to the new marker
     // 3. Error handling- what happnes if the address is not recognized by google?
     console.log(this.profileForm.value);
-    this.serviceProviders.addWorker(this.profileForm.value);
+    this.workers.addWorker(this.profileForm.value).subscribe();
     this.router.navigateByUrl('/');
   }
 

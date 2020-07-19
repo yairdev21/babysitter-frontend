@@ -1,3 +1,12 @@
+.pan-to-center-btn {
+    float: right;
+    position: relative;
+    bottom: 150px;
+    right: 10px;
+    z-index: 1;
+    box-shadow: none;
+}
+
 .add-job-btn {
     background-color: #673ab7;
     color: #fff;

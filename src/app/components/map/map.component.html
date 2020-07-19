@@ -1,5 +1,6 @@
 <p>bs-map works!!!</p>
 <google-map [center]="center" width="100%" [height]="550" [zoom]="15" [options]="options">
+    <button mat-raised-button class="pan-to-center-btn" (click)="panToCenter()"><mat-icon>gps_fixed</mat-icon></button>
     <map-marker #markerElem *ngFor="let marker of markers"
     [position]="marker.info.position" [label]="marker.label"
     [title]="marker.title" [options]="marker.options"
@@ -9,5 +10,6 @@
     <!-- <map-info-window>
         {{infoContent}}
     </map-info-window> -->  
+    <a mat-raised-button class="add-job-btn" routerLink="/post" routerLinkActive="active">
+        הוסף עבודה<mat-icon>add</mat-icon></a>
 </google-map>
-<a mat-raised-button class="add-job-btn" routerLink="/post" routerLinkActive="active">הוסף עבודה</a>

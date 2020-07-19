@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {Observable, of} from "rxjs";
-import { workerInfo, workerForm } from '../models/worker-info.interface';
+import { Injectable, isDevMode } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, of, throwError} from 'rxjs';
+import { tap, catchError} from 'rxjs/operators';
+
+import { WorkerInfo, WorkerForm } from '../models/worker-info.interface';
 import { MarkerWithInfo } from '../models/marker.interface';
 
 @Injectable({
@@ -32,46 +34,55 @@ export class Workers {
     options: {
       animation: google.maps.Animation.BOUNCE
     }
-  }
+  };
 
 
 
   constructor(private http: HttpClient) { }
-  baseUrl: string = 'http://localhost:8080/users/';
-  //TODO: delete the mockMarker
-  markers: MarkerWithInfo[] = [this.mockMarker];
+  apiUrl: string =  (isDevMode())
+  ? '//localhost:3000/api/worker/'
+  : '/api/worker/';
 
-  
-  getWorkers() : Observable<MarkerWithInfo[]> {
-    //return this.http.get<ApiResponse>(this.baseUrl);
-    return of(this.markers);
+  getWorkers(): Observable<MarkerWithInfo[]> {
+    return this.http.get<MarkerWithInfo[]>(this.apiUrl)
+      .pipe(
+        tap(result => {
+          console.log('fetched workers', result);
+        }),
+        catchError(this.handleError)
+      );
   }
   
-  // getUserById(id: number): Observable<ApiResponse> {
-  //   return this.http.get<ApiResponse>(this.baseUrl + id);
-  // }
+// getUserById(id: number): Observable<ApiResponse> {
+//   return this.http.get<ApiResponse>(this.baseUrl + id);
+// }
 
-  addWorker(serviceProviderInfo: workerForm): Observable<boolean> {
-    const info :workerInfo = {...serviceProviderInfo, created: Date.now()}
-    //TODO: if I use angular material date picker I dont need to parse the date
-    info.dateOfBirth = this.parseDate(info.dateOfBirth);
-    const marker : MarkerWithInfo = { 
+  addWorker(workerFormData: WorkerForm): Observable<MarkerWithInfo> {
+    const marker: MarkerWithInfo = this.BuildMarkerWithInfo(workerFormData);
+    // return of(true);
+    return this.http.post<MarkerWithInfo>(this.apiUrl, marker)
+    .pipe(
+      tap(result => {
+        console.log('added marker', marker, result);
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  private BuildMarkerWithInfo(workerInfo: WorkerForm): MarkerWithInfo {
+    const info: WorkerInfo = { ...workerInfo, created: Date.now() };
+    return {
       info,
-      //TODO: declare all these properties to be reusable:
+      // TODO: declare all these properties to be reusable:
       label: {
         color: 'blue',
-        text: info.firstName + info.lastName
-      },      
+        text: `${info.firstName} ${info.lastName}`
+      },
       title: 'פנויה הערב',
       options: {
         animation: google.maps.Animation.BOUNCE
       }
-    }
-    this.markers.push(marker)
-    return of(true);
-    //return this.http.post<boolean>(this.baseUrl, user);
-
-
+    };
   }
 
   // updateUser(user: User): Observable<ApiResponse> {
@@ -82,9 +93,16 @@ export class Workers {
   //   return this.http.delete<ApiResponse>(this.baseUrl + id);
   // }
 
-  private parseDate(s) {
-    var b = s.split(/\D/);
-    return new Date(b[0], --b[1], b[2]);
+  // TODO: make error handling in api service
+  private handleError(error: HttpErrorResponse): Observable<never>{
+    if (error.error instanceof ErrorEvent) {
+      console.error('An error occurred:', error.error.message);
+    } else {
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    return throwError(
+      'Something bad happened; please try again later.');
   }
-
 }
